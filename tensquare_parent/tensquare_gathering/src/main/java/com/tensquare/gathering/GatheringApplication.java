@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import util.IdWorker;
 
 @SpringBootApplication
+//使用spring boot的缓存
 @EnableCaching
 public class GatheringApplication {
 

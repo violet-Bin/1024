@@ -95,7 +95,7 @@ public class GatheringService {
      *
      * @param gathering
      */
-    @CacheEvict(value = "gathering", key = "#gathering.id")
+    @CacheEvict(value = "gathering", key = "#gathering.id")  // 删除
     public void update(Gathering gathering) {
         gatheringDao.save(gathering);
     }
