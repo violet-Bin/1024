@@ -1,15 +1,17 @@
-package com.tensquare.article;
+package com.tensquare.gathering;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import util.IdWorker;
 
 @SpringBootApplication
-public class ArticleApplication {
+@EnableCaching
+public class GatheringApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ArticleApplication.class, args);
+        SpringApplication.run(GatheringApplication.class, args);
     }
 
     @Bean

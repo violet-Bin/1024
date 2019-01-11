@@ -41,7 +41,7 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/{labelId}", method = RequestMethod.PUT)
-    public Result update( @PathVariable String labelId, @RequestBody Label label) {
+    public Result update(@PathVariable String labelId, @RequestBody Label label) {
         label.setId(labelId);
         labelService.update(label);
         return new Result(true, StatusCode.OK, "更新成功");
@@ -54,7 +54,7 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public Result deleteById(@RequestBody Label label) {
+    public Result findSearch(@RequestBody Label label) {
         List<Label> list = labelService.findSearch(label);
         return new Result(true, StatusCode.OK, "查询成功", list);
     }

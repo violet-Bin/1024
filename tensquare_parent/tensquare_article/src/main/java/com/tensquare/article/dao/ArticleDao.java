@@ -9,16 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 
 /**
  * 数据访问接口
- * @author Administrator
  *
+ * @author Administrator
  */
-public interface ArticleDao extends JpaRepository<Article,String>,JpaSpecificationExecutor<Article>{
+public interface ArticleDao extends JpaRepository<Article, String>, JpaSpecificationExecutor<Article> {
 
     @Modifying
     @Query(value = "UPDATE tb_article SET state=1 WHERE id = ?", nativeQuery = true)
-	public void updateState(String id);
+    void updateState(String id);
 
     @Modifying
     @Query(value = "UPDATE tb_article SET thumbup=thumbup+1 WHERE id = ?", nativeQuery = true)
-    public void addThumbup(String id);
+    void addThumbup(String id);
 }

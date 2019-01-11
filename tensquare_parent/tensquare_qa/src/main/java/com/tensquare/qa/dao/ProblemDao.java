@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 
 /**
  * 数据访问接口
- * @author Administrator
  *
+ * @author Administrator
  */
-public interface ProblemDao extends JpaRepository<Problem,String>,JpaSpecificationExecutor<Problem>{
+public interface ProblemDao extends JpaRepository<Problem, String>, JpaSpecificationExecutor<Problem> {
 
     @Query(value = "SELECT * FROM tb_problem WHERE id IN (SELECT problemid FROM tb_pl WHERE labelid=?) ORDER BY replytime DESC", nativeQuery = true)
     Page<Problem> newList(String labelid, Pageable pageable);

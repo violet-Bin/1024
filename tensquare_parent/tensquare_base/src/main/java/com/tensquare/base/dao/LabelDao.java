@@ -7,7 +7,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface LabelDao extends JpaRepository<Label, String>, JpaSpecificationExecutor<Label> {
 
 
-
-
-
 }

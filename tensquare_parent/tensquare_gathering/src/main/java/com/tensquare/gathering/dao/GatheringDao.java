@@ -1,14 +1,15 @@
-package com.tensquare.qa.dao;
+package com.tensquare.gathering.dao;
 
-import com.tensquare.qa.pojo.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import com.tensquare.gathering.pojo.Gathering;
 
 /**
  * 数据访问接口
  *
  * @author Administrator
  */
-public interface ReplyDao extends JpaRepository<Reply, String>, JpaSpecificationExecutor<Reply> {
+public interface GatheringDao extends JpaRepository<Gathering, String>, JpaSpecificationExecutor<Gathering> {
 
 }
