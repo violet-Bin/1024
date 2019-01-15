@@ -20,9 +20,27 @@ public class ProductTest {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    /**
+     * 直接模式
+     */
     @Test
-    public void sendMsg() {
+    public void sendMsg1() {
         rabbitTemplate.convertAndSend("tensquare", "测试直接模式");
     }
 
+    /**
+     * 分裂模式
+     */
+    @Test
+    public void sendMsg2() {
+        rabbitTemplate.convertAndSend("exchange1", "", "分裂模式测试");
+    }
+
+    /**
+     * 主题模式
+     */
+    @Test
+    public void sendMsg3() {
+        rabbitTemplate.convertAndSend("topic1", "good.abc", "主题模式测试");
+    }
 }
