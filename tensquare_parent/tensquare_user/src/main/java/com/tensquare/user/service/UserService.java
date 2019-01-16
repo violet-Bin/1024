@@ -136,23 +136,9 @@ public class UserService {
      * @param id
      */
     public void deleteById(String id) {
-        String header = request.getHeader("Authorization");
-        if (StringUtils.isEmpty(header)) {
-            throw new RuntimeException("权限不足！");
-        }
-        if (!header.startsWith("Bearer ")) {
-            throw new RuntimeException("权限不足！");
-        }
-        //得到token
-        String token = header.substring(7);
-        try {
-            Claims claims = jwtUtil.parseJWT(token);
-            String roles = (String) claims.get("roles");
-            if (roles == null || !"admin".equals(roles)) {
-                throw new RuntimeException("权限不足！");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("权限不足！");
+        String token = (String) request.getAttribute("claims_admin");
+        if (StringUtils.isEmpty(token)) {
+            throw new RuntimeException("权限不足");
         }
         userDao.deleteById(id);
     }

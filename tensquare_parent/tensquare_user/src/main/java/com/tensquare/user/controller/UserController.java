@@ -1,5 +1,6 @@
 package com.tensquare.user.controller;
 
+import com.google.common.collect.Maps;
 import com.tensquare.user.pojo.User;
 import com.tensquare.user.service.UserService;
 import entity.PageResult;
@@ -33,13 +34,22 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    /**
+     * login
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result login(@RequestBody User user) {
         user = userService.login(user.getMobile(), user.getPassword());
         if (user == null) {
             return new Result(false, StatusCode.LOGINERROR, "登录失败");
         }
-        return new Result(true, StatusCode.OK, "登陆成功");
+        String token = jwtUtil.createJWT(user.getId(), user.getMobile(), "user");
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("token", token);
+        map.put("roles", "user");
+        return new Result(true, StatusCode.OK, "登陆成功", map);
     }
 
     /**
