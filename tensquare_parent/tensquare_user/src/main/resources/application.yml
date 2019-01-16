@@ -15,3 +15,7 @@ spring:
     host: 39.105.189.50
   rabbitmq:
     host: 39.105.189.50
+jwt:
+  config:
+    key: bingo
+    ttl: 3600000

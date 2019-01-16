@@ -1,5 +1,6 @@
 package com.tensquare.user.controller;
 
+import com.google.common.collect.Maps;
 import com.tensquare.user.pojo.Admin;
 import com.tensquare.user.service.AdminService;
 import entity.PageResult;
@@ -8,6 +9,7 @@ import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import util.JwtUtil;
 
 import java.util.Map;
 
@@ -24,6 +26,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     /**
      * 用户登陆
      *
@@ -34,9 +39,12 @@ public class AdminController {
         if (adminLogin == null) {
             return new Result(false, StatusCode.LOGINERROR, "登录失败");
         }
-        // todo 使得前后端可以通话的操作.采用JWT来实现.
-
-        return new Result(true, StatusCode.OK, "登陆成功");
+        // 使得前后端可以通话的操作.采用JWT来实现.
+        String token = jwtUtil.createJWT(adminLogin.getId(), adminLogin.getLoginname(), "admin");
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("token", token);
+        map.put("roles", "admin");
+        return new Result(true, StatusCode.OK, "登陆成功", map);
     }
 
     /**

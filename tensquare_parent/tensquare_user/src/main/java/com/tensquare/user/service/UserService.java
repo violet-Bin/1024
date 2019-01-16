@@ -3,7 +3,9 @@ package com.tensquare.user.service;
 import com.google.common.collect.Maps;
 import com.tensquare.user.dao.UserDao;
 import com.tensquare.user.pojo.User;
+import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,11 +15,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import util.IdWorker;
+import util.JwtUtil;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +50,12 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     /**
      * 查询全部列表
@@ -126,10 +136,24 @@ public class UserService {
      * @param id
      */
     public void deleteById(String id) {
-//        String token = (String) request.getAttribute("claims_admin");
-//        if (token == null || "".equals(token)) {
-//            throw new RuntimeException("权限不足！");
-//        }
+        String header = request.getHeader("Authorization");
+        if (StringUtils.isEmpty(header)) {
+            throw new RuntimeException("权限不足！");
+        }
+        if (!header.startsWith("Bearer ")) {
+            throw new RuntimeException("权限不足！");
+        }
+        //得到token
+        String token = header.substring(7);
+        try {
+            Claims claims = jwtUtil.parseJWT(token);
+            String roles = (String) claims.get("roles");
+            if (roles == null || !"admin".equals(roles)) {
+                throw new RuntimeException("权限不足！");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("权限不足！");
+        }
         userDao.deleteById(id);
     }
 
@@ -213,28 +237,6 @@ public class UserService {
         return null;
     }
 
-//    public void sendSms(String mobile) {
-//        //生成六位数字随机数
-//        String checkcode = RandomStringUtils.randomNumeric(6);
-//        //向缓存中放一份
-//        redisTemplate.opsForValue().set("checkcode_" + mobile, checkcode, 6, TimeUnit.HOURS);
-//        //给用户发一份
-//        Map<String, String> map = new HashMap<>();
-//        map.put("mobile", mobile);
-//        map.put("checkcode", checkcode);
-//        //rabbitTemplate.convertAndSend("sms", map);
-//        //在控制台显示一份【方便测试】
-//        System.out.println("验证码为：" + checkcode);
-//    }
-//
-//    public User login(String mobile, String password) {
-//        User user = userDao.findByMobile(mobile);
-//        if (user != null && encoder.matches(password, user.getPassword())) {
-//            return user;
-//        }
-//        return null;
-//    }
-//
 //    @Transactional
 //    public void updatefanscountandfollowcount(int x, String userid, String friendid) {
 //        userDao.updatefanscount(x, friendid);
