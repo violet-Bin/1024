@@ -25,6 +25,21 @@ public class AdminController {
     private AdminService adminService;
 
     /**
+     * 用户登陆
+     *
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Result login(@RequestBody Admin admin) {
+        Admin adminLogin = adminService.login(admin.getLoginname(), admin.getPassword());
+        if (adminLogin == null) {
+            return new Result(false, StatusCode.LOGINERROR, "登录失败");
+        }
+        // todo 使得前后端可以通话的操作.采用JWT来实现.
+
+        return new Result(true, StatusCode.OK, "登陆成功");
+    }
+
+    /**
      * 查询全部数据
      *
      * @return

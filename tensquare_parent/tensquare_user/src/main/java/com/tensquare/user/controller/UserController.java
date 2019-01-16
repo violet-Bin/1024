@@ -28,6 +28,21 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Result login(@RequestBody User user) {
+        user = userService.login(user.getMobile(), user.getPassword());
+        if (user == null) {
+            return new Result(false, StatusCode.LOGINERROR, "登录失败");
+        }
+        return new Result(true, StatusCode.OK, "登陆成功");
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param mobile
+     * @return
+     */
     @RequestMapping(value = "/sendsms/{mobile}", method = RequestMethod.POST)
     public Result sendSms(@PathVariable String mobile) {
         userService.sendSms(mobile);
