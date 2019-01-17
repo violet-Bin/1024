@@ -12,3 +12,9 @@ aliyun:
     accessKeySecret: fGbTXM9R4uVgt8g2Cr97wF9NypmHEM
     sign_name: Bingo之家
     template_code: SMS_155855084
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka/
+  instance:
+    prefer-ip-address: true
