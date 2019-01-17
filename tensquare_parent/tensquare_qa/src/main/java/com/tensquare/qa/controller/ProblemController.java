@@ -1,5 +1,7 @@
 package com.tensquare.qa.controller;
 
+import com.netflix.discovery.converters.Auto;
+import com.tensquare.qa.client.BaseClient;
 import com.tensquare.qa.pojo.Problem;
 import com.tensquare.qa.service.ProblemService;
 import entity.PageResult;
@@ -30,6 +32,15 @@ public class ProblemController {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private BaseClient baseClient;
+
+    @RequestMapping(value = "/label/{labelId}", method = RequestMethod.GET)
+    public Result findByLableId(@PathVariable String labelId) {
+        Result result = baseClient.findById(labelId);
+        return result;
+    }
 
     @RequestMapping(value = "/newlist/{labelid}/{page}/{size}", method = RequestMethod.GET)
     public Result newlist(@PathVariable String labelid, @PathVariable int page, @PathVariable int size) {
