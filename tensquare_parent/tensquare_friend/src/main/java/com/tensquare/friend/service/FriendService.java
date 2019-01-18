@@ -1,7 +1,9 @@
 package com.tensquare.friend.service;
 
 import com.tensquare.friend.dao.FriendDao;
+import com.tensquare.friend.dao.NoFriendDao;
 import com.tensquare.friend.pojo.Friend;
+import com.tensquare.friend.pojo.NoFriend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,9 @@ public class FriendService {
     @Autowired
     private FriendDao friendDao;
 
+    @Autowired
+    private NoFriendDao noFriendDao;
+
     public int addFriend(String userid, String friendid) {
         //先判断userid到friendid是否有数据，有就是重复添加好友，return 0
         Friend friend = friendDao.findByUseridAndFriendid(userid, friendid);
@@ -33,9 +38,34 @@ public class FriendService {
         //判断从friendid到userid是否有数据，如果有，把双方的状态都改为1
         if (friendDao.findByUseridAndFriendid(friendid, userid) != null) {
             //把双方都置为1
-            friendDao.updateIsLike("", userid, friendid);
-            friendDao.updateIsLike("", friendid, userid);
+            friendDao.updateIsLike("1", userid, friendid);
+            friendDao.updateIsLike("1", friendid, userid);
         }
-        return 0;
+        return 1;
+    }
+
+    public int addNoFriend(String userid, String friendid) {
+        //先判断userid到friendid是否有数据，有就是重复添加好友，return 0
+        NoFriend noFriend = noFriendDao.findByUseridAndFriendid(userid, friendid);
+        if (noFriend != null) {
+            return 0;
+        }
+        noFriend = new NoFriend();
+        noFriend.setUserid(userid);
+        noFriend.setFriendid(friendid);
+        noFriendDao.save(noFriend);
+        return 1;
+    }
+
+    public void deleteFriend(String userid, String friendid) {
+        //删除还有表中userid到friendid这条数据
+        friendDao.deletefriend(userid, friendid);
+        //更新friendid到userid的islike为0
+        friendDao.updateIsLike("0", friendid, userid);
+        //非好友表中添加数据
+        NoFriend nofriend = new NoFriend();
+        nofriend.setUserid(userid);
+        nofriend.setFriendid(friendid);
+        noFriendDao.save(nofriend);
     }
 }
