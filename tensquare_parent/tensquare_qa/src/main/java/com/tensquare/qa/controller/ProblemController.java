@@ -1,18 +1,15 @@
 package com.tensquare.qa.controller;
 
-import com.netflix.discovery.converters.Auto;
 import com.tensquare.qa.client.BaseClient;
 import com.tensquare.qa.pojo.Problem;
 import com.tensquare.qa.service.ProblemService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
-import io.jsonwebtoken.Jwt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

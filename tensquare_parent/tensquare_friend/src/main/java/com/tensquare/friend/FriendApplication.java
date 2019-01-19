@@ -1,5 +1,6 @@
 package com.tensquare.friend;
 
+import com.tensquare.friend.client.UserClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;

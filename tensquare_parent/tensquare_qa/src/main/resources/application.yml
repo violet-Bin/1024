@@ -26,3 +26,7 @@ ribbon:
   ReadTimeout: 120000
 #请求连接的超时时间
   ConnectTimeout: 30000
+#开启熔断器
+feign:
+  hystrix:
+    enabled: true

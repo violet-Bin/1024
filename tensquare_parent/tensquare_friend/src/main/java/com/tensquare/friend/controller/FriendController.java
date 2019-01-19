@@ -7,7 +7,6 @@ import entity.StatusCode;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +40,7 @@ public class FriendController {
      * @return
      */
     @RequestMapping(value = "/like/{friendid}/{type}", method = RequestMethod.PUT)
-    public Result addFriend(@PathVariable String friendid, @PathVariable String type) {
+    public Result addFriend(@PathVariable("friendid") String friendid, @PathVariable("type") String type) {
         //验证是否登录，并且拿到当前登录的用户的id
         Claims claims = (Claims) request.getAttribute("claims_user");
         if (claims == null) {
@@ -78,6 +77,11 @@ public class FriendController {
         }
     }
 
+    /**
+     * 删除好友
+     * @param friendid
+     * @return
+     */
     @RequestMapping(value = "/{friendid}", method = RequestMethod.DELETE)
     public Result deleteFriend(@PathVariable String friendid){
         //验证是否登录，并且拿到当前登录的用户id
