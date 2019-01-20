@@ -9,6 +9,10 @@ eureka:
       defaultZone: http://127.0.0.1:6868/eureka/
   instance:
     prefer-ip-address: true
+jwt:
+  config:
+    key: bingo
+    ttl: 3600000
 zuul:
   routes:
     tensquare-base:
