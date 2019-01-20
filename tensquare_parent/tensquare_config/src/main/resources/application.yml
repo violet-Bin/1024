@@ -1,0 +1,10 @@
+server:
+  port: 25000
+spring:
+  application:
+    name: tensquare_config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/bingo_qiqi/1024.git
