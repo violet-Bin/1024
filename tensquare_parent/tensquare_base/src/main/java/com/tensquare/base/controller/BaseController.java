@@ -6,6 +6,8 @@ import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +21,18 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/label")
+@RefreshScope    //在读取配置的那个类上加入@RefreshScope，必须加，否则刷新不生效 //todo 添加@RefreshScope注解到所有controller上
 public class BaseController {
 
     @Autowired
     private LabelService labelService;
 
+//    @Value("${testKey}")
+//    private String testKey;
+
     @RequestMapping(method = RequestMethod.GET)
     public Result findAll() {
+//        System.out.println(testKey);
         return new Result(true, StatusCode.OK, "查询成功", labelService.findAll());
     }
 
