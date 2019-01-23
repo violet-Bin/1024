@@ -4,4 +4,4 @@ spring:
       name: sms
       profile: dev
       label: master
-      uri: http://127.0.0.1:25000
+      uri: http://39.105.189.50:25000
