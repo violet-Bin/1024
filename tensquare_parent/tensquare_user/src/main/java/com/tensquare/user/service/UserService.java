@@ -212,7 +212,7 @@ public class UserService {
         map.put("checkCode", checkCode);
         rabbitTemplate.convertAndSend("sms", map);
         //在控制台显示一份【方便测试】
-        System.out.println("验证码为：" + checkCode);
+        //System.out.println("验证码为：" + checkCode);
     }
 
 
