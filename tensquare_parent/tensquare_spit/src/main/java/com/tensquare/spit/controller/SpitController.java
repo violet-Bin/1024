@@ -5,10 +5,13 @@ import com.tensquare.spit.service.SpitService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: jiangjiabin
@@ -25,6 +28,9 @@ public class SpitController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @RequestMapping(method = RequestMethod.GET)
     public Result findAll() {
@@ -63,8 +69,16 @@ public class SpitController {
 
     @RequestMapping(value = "/thumbup/{spitId}", method = RequestMethod.PUT)
     public Result thumbup(@PathVariable String spitId) {
-        //判断当前用户是否已经点赞，但是现在没做认证，暂时先把userid写死
-        String userid = "111";
+//        //判断当前用户是否已经点赞，但是现在没做认证，暂时先把userid写死
+//        String userid = "111";
+        //验证是否登录，并且拿到当前登录的用户的id
+        Claims claims = (Claims) request.getAttribute("claims_user");
+        if (claims == null) {
+            //说明当前用户没有user角色
+            return new Result(false, StatusCode.ACCESSERROR, "");
+        }
+        //得到当前登录的用户id
+        String userid = claims.getId();
         //判断当前用户是否已经点过赞
         if (redisTemplate.opsForValue().get("thumbup_" + userid)!=null){
             return new Result(false, StatusCode.REPERROR, "不能重复点赞");
