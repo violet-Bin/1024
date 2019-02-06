@@ -86,7 +86,7 @@ public class SpitService {
         //方式二：使用原生的mongo命令来实现自增
         // db.spit.update({"_id":"1"},{$inc:{thumbup:NumberInt(1)}})
         Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is("1"));
+        query.addCriteria(Criteria.where("_id").is(spitId));
         Update update = new Update();
         update.inc("thumbup", 1);
         mongoTemplate.updateFirst(query, update, "spit");
