@@ -210,9 +210,9 @@ public class UserService {
         Map<String, String> map = Maps.newHashMap();
         map.put("mobile", mobile);
         map.put("checkCode", checkCode);
-        //rabbitTemplate.convertAndSend("sms", map);
+        rabbitTemplate.convertAndSend("sms", map);
         //在控制台显示一份【方便测试】
-        System.out.println("验证码为：" + checkCode);
+        //System.out.println("验证码为：" + checkCode);
     }
 
 
